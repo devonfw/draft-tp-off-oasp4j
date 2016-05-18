@@ -1,5 +1,10 @@
 package io.oasp.gastronomy.restaurant.offermanagement.logic.api;
 
+import java.sql.Blob;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import io.oasp.gastronomy.restaurant.general.logic.api.to.BinaryObjectEto;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.DrinkEto;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.MealEto;
@@ -13,19 +18,16 @@ import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductFilter;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductSearchCriteriaTo;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductSortBy;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SideDishEto;
+import io.oasp.gastronomy.restaurant.offermanagement.logic.api.usecase.UcFindSpecial;
+import io.oasp.gastronomy.restaurant.offermanagement.logic.api.usecase.UcManageSpecial;
 import io.oasp.module.jpa.common.api.to.PaginatedListTo;
-
-import java.sql.Blob;
-import java.util.List;
-
-import javax.validation.Valid;
 
 /**
  * Interface for OfferManagement.
  *
  * @author loverbec
  */
-public interface Offermanagement {
+public interface Offermanagement extends UcFindSpecial, UcManageSpecial {
 
   /**
    * Gets an {@link OfferEto} using its entity identifier.
@@ -70,7 +72,6 @@ public interface Offermanagement {
   /**
    * @param offerFilterBo is the {@link OfferFilter offers filter criteria}
    * @param sortBy is the {@link OfferSortBy} attribute, which defines the sorting.
-   *
    * @return the {@link List} with all {@link OfferEto}s that match the {@link OfferFilter} criteria.
    */
   List<OfferEto> findOffersFiltered(OfferFilter offerFilterBo, OfferSortBy sortBy);
