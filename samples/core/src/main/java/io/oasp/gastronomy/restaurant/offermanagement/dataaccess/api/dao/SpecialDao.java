@@ -17,4 +17,5 @@ public interface SpecialDao extends ApplicationDao<SpecialEntity> {
    * @return the {@link PaginatedListTo} with the matching {@link SpecialEntity} objects.
    */
   PaginatedListTo<SpecialEntity> findSpecials(SpecialSearchCriteriaTo criteria);
+
 }

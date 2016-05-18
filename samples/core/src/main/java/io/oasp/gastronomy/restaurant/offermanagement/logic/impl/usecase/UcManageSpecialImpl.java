@@ -22,7 +22,9 @@ import io.oasp.gastronomy.restaurant.offermanagement.logic.base.usecase.Abstract
 @Validated
 public class UcManageSpecialImpl extends AbstractSpecialUc implements UcManageSpecial {
 
-  /** Logger instance. */
+  /**
+   * Logger instance.
+   */
   private static final Logger LOG = LoggerFactory.getLogger(UcManageSpecialImpl.class);
 
   @Override
@@ -47,4 +49,5 @@ public class UcManageSpecialImpl extends AbstractSpecialUc implements UcManageSp
     LOG.debug("Special with id '{}' has been created.", specialEntity.getId());
     return getBeanMapper().map(specialEntity, SpecialEto.class);
   }
+
 }

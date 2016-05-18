@@ -25,6 +25,8 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
 
   private OfferEntity offer;
 
+  private String Comment;
+
   @Embedded
   private WeeklyPeriodEmbeddable activePeriod;
 
@@ -148,6 +150,20 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
 
   @Override
   public void setActivePeriod(WeeklyPeriod activePeriod) {
+
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public String getComment() {
+
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void setComment(String Comment) {
 
     // TODO Auto-generated method stub
 

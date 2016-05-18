@@ -21,4 +21,8 @@ public interface Special extends ApplicationEntity {
 
   public void setSpecialPrice(Money specialPrice);
 
+  public String getComment();
+
+  public void setComment(String Comment);
+
 }

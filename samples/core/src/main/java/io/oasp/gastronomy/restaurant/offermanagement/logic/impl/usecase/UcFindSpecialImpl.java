@@ -22,7 +22,9 @@ import io.oasp.module.jpa.common.api.to.PaginatedListTo;
 @Validated
 public class UcFindSpecialImpl extends AbstractSpecialUc implements UcFindSpecial {
 
-  /** Logger instance. */
+  /**
+   * Logger instance.
+   */
   private static final Logger LOG = LoggerFactory.getLogger(UcFindSpecialImpl.class);
 
   @Override
