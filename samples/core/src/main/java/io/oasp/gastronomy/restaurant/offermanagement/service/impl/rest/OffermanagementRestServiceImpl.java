@@ -1,5 +1,35 @@
 package io.oasp.gastronomy.restaurant.offermanagement.service.impl.rest;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.apache.cxf.helpers.IOUtils;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.Multipart;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
+
 import io.oasp.gastronomy.restaurant.general.logic.api.to.BinaryObjectEto;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.Offermanagement;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.DrinkEto;
@@ -13,35 +43,9 @@ import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductFilter;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductSearchCriteriaTo;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductSortBy;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SideDishEto;
+import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SpecialEto;
+import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SpecialSearchCriteriaTo;
 import io.oasp.module.jpa.common.api.to.PaginatedListTo;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.apache.cxf.helpers.IOUtils;
-import org.apache.cxf.jaxrs.ext.multipart.Attachment;
-import org.apache.cxf.jaxrs.ext.multipart.Multipart;
-import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 
 /**
  * This class contains methods for REST calls. Some URI structures may seem depricated, but in fact are not. See the
@@ -83,7 +87,6 @@ public class OffermanagementRestServiceImpl {
    * Delegates to {@link Offermanagement#saveOffer}.
    *
    * @param offer the {@link OfferEto} to save
-   *
    * @return the saved {@link OfferEto}
    */
   @POST
@@ -93,13 +96,10 @@ public class OffermanagementRestServiceImpl {
     return this.offermanagement.saveOffer(offer);
   }
 
-  // although id in path is redundant, this structure is intentionally chosen
-  // for further reasons behind this decision see one of the other ***ManagementRestServiceImpl
   /**
    * Delegates to {@link Offermanagement#saveOffer}.
    *
    * @param offer the {@link OfferEto} to be updated
-   *
    * @return the updated {@link OfferEto}
    */
   @PUT
@@ -237,9 +237,6 @@ public class OffermanagementRestServiceImpl {
     return this.offermanagement.findProduct(id);
   }
 
-  // although id in path is redundant, this structure is intentionally chosen
-  // for further reasons behind this decision see one of the other
-  // *ManagementRestServiceImpl
   /**
    * Delegates to {@link Offermanagement#saveProduct}.
    *
@@ -315,7 +312,7 @@ public class OffermanagementRestServiceImpl {
   public void updateProductPicture(@PathParam("id") long productId,
       @Multipart(value = "binaryObjectEto", type = MediaType.APPLICATION_JSON) BinaryObjectEto binaryObjectEto,
       @Multipart(value = "blob", type = MediaType.APPLICATION_OCTET_STREAM) InputStream picture)
-      throws SerialException, SQLException, IOException {
+          throws SerialException, SQLException, IOException {
 
     Blob blob = new SerialBlob(IOUtils.readBytesFromStream(picture));
     this.offermanagement.updateProductPicture(productId, blob, binaryObjectEto);
@@ -334,8 +331,8 @@ public class OffermanagementRestServiceImpl {
     byte[] data = IOUtils.readBytesFromStream(blob.getBinaryStream());
 
     List<Attachment> atts = new LinkedList<>();
-    atts.add(new Attachment("binaryObjectEto", MediaType.APPLICATION_JSON, this.offermanagement
-        .findProductPicture(productId)));
+    atts.add(new Attachment("binaryObjectEto", MediaType.APPLICATION_JSON,
+        this.offermanagement.findProductPicture(productId)));
     atts.add(new Attachment("blob", MediaType.APPLICATION_OCTET_STREAM, new ByteArrayInputStream(data)));
     return new MultipartBody(atts, true);
 
@@ -390,6 +387,79 @@ public class OffermanagementRestServiceImpl {
   public PaginatedListTo<ProductEto> findProductEtosByPost(ProductSearchCriteriaTo searchCriteriaTo) {
 
     return this.offermanagement.findProductEtos(searchCriteriaTo);
+  }
+
+  /**
+   * Delegates to {@link Offermanagement#findSpecial}.
+   *
+   * @param id the ID of the {@link SpecialEto}
+   * @return the {@link SpecialEto}
+   */
+  @GET
+  @Path("/special/{id}/")
+  public SpecialEto getSpecial(@PathParam("id") String id) {
+
+    Long idAsLong;
+    if (id == null) {
+      throw new BadRequestException("missing id");
+    }
+    try {
+      idAsLong = Long.parseLong(id);
+    } catch (NumberFormatException e) {
+      throw new BadRequestException("id is not a number");
+    } catch (NotFoundException e) {
+      throw new BadRequestException("special not found");
+    }
+    return this.offermanagement.findSpecial(idAsLong);
+  }
+
+  /**
+   * Delegates to {@link Offermanagement#saveSpecial}.
+   *
+   * @param special the {@link SpecialEto} to be saved
+   * @return the recently created {@link SpecialEto}
+   */
+  @POST
+  @Path("/special/")
+  public SpecialEto saveSpecial(SpecialEto special) {
+
+    return this.offermanagement.saveSpecial(special);
+  }
+
+  /**
+   * Delegates to {@link Offermanagement#deleteSpecial}.
+   *
+   * @param id ID of the {@link SpecialEto} to be deleted
+   */
+  @DELETE
+  @Path("/special/{id}/")
+  public void deleteSpecial(@PathParam("id") String id) {
+
+    Long idAsLong;
+    if (id == null) {
+      throw new BadRequestException("missing id");
+    }
+    try {
+      idAsLong = Long.parseLong(id);
+    } catch (NumberFormatException e) {
+      throw new BadRequestException("id is not a number");
+    } catch (NotFoundException e) {
+      throw new BadRequestException("special not found");
+    }
+    this.offermanagement.deleteSpecial(idAsLong);
+  }
+
+  /**
+   * Delegates to {@link Offermanagement#findSpecialEtos}.
+   *
+   * @param searchCriteriaTo the pagination and search criteria to be used for finding specials.
+   * @return the {@link PaginatedListTo list} of matching {@link SpecialEto}s.
+   */
+  @Path("/special/search")
+  @POST
+  public PaginatedListTo<SpecialEto> findSpecialsByPost(SpecialSearchCriteriaTo searchCriteriaTo) {
+
+    return this.offermanagement.findSpecialEtos(searchCriteriaTo);
   }
 
 }
