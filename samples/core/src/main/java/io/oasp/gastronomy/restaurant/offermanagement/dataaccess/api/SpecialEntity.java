@@ -1,13 +1,15 @@
 package io.oasp.gastronomy.restaurant.offermanagement.dataaccess.api;
 
-import io.oasp.gastronomy.restaurant.general.common.api.datatype.Money;
-import io.oasp.gastronomy.restaurant.general.dataaccess.api.ApplicationPersistenceEntity;
-import io.oasp.gastronomy.restaurant.offermanagement.common.api.Offer;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import io.oasp.gastronomy.restaurant.general.common.api.datatype.Money;
+import io.oasp.gastronomy.restaurant.general.dataaccess.api.ApplicationPersistenceEntity;
+import io.oasp.gastronomy.restaurant.offermanagement.common.api.Offer;
 
 /**
  * The {@link ApplicationPersistenceEntity persistent entity} for a special.
@@ -21,6 +23,8 @@ public class SpecialEntity {
   private String name;
 
   private OfferEntity offer;
+
+  private Date created;
 
   @Embedded
   private WeeklyPeriodEmbeddable activePeriod;
@@ -106,6 +110,22 @@ public class SpecialEntity {
   public void setSpecialPrice(Money specialPrice) {
 
     this.specialPrice = specialPrice;
+  }
+
+  /**
+   * @return created
+   */
+  public Date getCreated() {
+
+    return this.created;
+  }
+
+  /**
+   * @param created new value of {@link #getcreated}.
+   */
+  public void setCreated(Date created) {
+
+    this.created = created;
   }
 
 }
