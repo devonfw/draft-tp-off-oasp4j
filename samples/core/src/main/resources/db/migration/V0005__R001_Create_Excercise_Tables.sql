@@ -18,6 +18,8 @@ CREATE TABLE SPECIAL  (
 
   created timestamp,
 
+  comment VARCHAR(255),
+
   offer_id BIGINT
 
 ) ;

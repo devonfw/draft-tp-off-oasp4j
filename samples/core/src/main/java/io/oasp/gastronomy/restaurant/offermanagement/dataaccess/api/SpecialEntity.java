@@ -39,6 +39,8 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
 
   private Date created;
 
+  private String comment;
+
   /**
    * @return created
    */
@@ -171,6 +173,19 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
   public void setActivePeriod(WeeklyPeriod activePeriod) {
 
     this.activePeriod = (WeeklyPeriodEmbeddable) activePeriod;
+
+  }
+
+  @Override
+  public String getComment() {
+
+    return this.comment;
+  }
+
+  @Override
+  public void setComment(String comment) {
+
+    this.comment = comment;
 
   }
 

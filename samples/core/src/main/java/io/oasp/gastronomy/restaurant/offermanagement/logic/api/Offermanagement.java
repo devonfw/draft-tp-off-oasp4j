@@ -18,6 +18,8 @@ import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductFilter;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductSearchCriteriaTo;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductSortBy;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SideDishEto;
+import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SpecialEto;
+import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SpecialSearchCriteriaTo;
 import io.oasp.module.jpa.common.api.to.PaginatedListTo;
 
 /**
@@ -70,7 +72,6 @@ public interface Offermanagement {
   /**
    * @param offerFilterBo is the {@link OfferFilter offers filter criteria}
    * @param sortBy is the {@link OfferSortBy} attribute, which defines the sorting.
-   *
    * @return the {@link List} with all {@link OfferEto}s that match the {@link OfferFilter} criteria.
    */
   List<OfferEto> findOffersFiltered(OfferFilter offerFilterBo, OfferSortBy sortBy);
@@ -220,5 +221,37 @@ public interface Offermanagement {
    * @param productId is the ID of the {@link ProductEto} to delte the picture
    */
   void deleteProductPicture(Long productId);
+
+  /**
+   * Returns a Special by its id 'id'.
+   *
+   * @param id The id 'id' of the Special.
+   * @return The {@link SpecialEto} with id 'id'
+   */
+  SpecialEto findSpecial(Long id);
+
+  /**
+   * Returns a paginated list of Specials matching the search criteria.
+   *
+   * @param criteria the {@link SpecialSearchCriteriaTo}.
+   * @return the {@link List} of matching {@link SpecialEto}s.
+   */
+  PaginatedListTo<SpecialEto> findSpecialEtos(SpecialSearchCriteriaTo criteria);
+
+  /**
+   * Deletes a special from the database by its id 'specialId'.
+   *
+   * @param specialId Id of the special to delete
+   * @return boolean <code>true</code> if the special can be deleted, <code>false</code> otherwise
+   */
+  boolean deleteSpecial(Long specialId);
+
+  /**
+   * Saves a special and store it in the database.
+   *
+   * @param special the {@link SpecialEto} to create.
+   * @return the new {@link SpecialEto} that has been saved with ID and version.
+   */
+  SpecialEto saveSpecial(SpecialEto special);
 
 }
