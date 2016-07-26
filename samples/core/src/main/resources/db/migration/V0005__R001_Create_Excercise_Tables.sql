@@ -1,0 +1,27 @@
+CREATE TABLE SPECIAL  (
+
+  id BIGINT NOT NULL AUTO_INCREMENT,
+
+  modificationCounter INTEGER NOT NULL,
+
+  name VARCHAR(20),
+
+  startingDay INTEGER NOT NULL,
+
+  startingHour INT NOT NULL,
+
+  endingDay  INTEGER NOT NULL,
+
+  endingHour  INT NOT NULL,
+
+  specialPrice DECIMAL(19.2),
+
+  created timestamp,
+
+  offer_id BIGINT
+
+) ;
+
+ALTER TABLE SPECIAL ADD CONSTRAINT PK_SPECIAL PRIMARY KEY(id);
+
+ALTER TABLE SPECIAL ADD CONSTRAINT FK_SPECIAL2OFFER FOREIGN KEY(offer_id) REFERENCES OFFER(id) NOCHECK;

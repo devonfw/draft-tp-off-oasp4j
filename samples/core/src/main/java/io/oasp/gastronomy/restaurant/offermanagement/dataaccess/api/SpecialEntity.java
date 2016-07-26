@@ -5,7 +5,10 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import io.oasp.gastronomy.restaurant.general.common.api.datatype.Money;
@@ -39,6 +42,7 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
   /**
    * @return created
    */
+  @Override
   public Date getCreated() {
 
     return this.created;
@@ -47,6 +51,8 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
   /**
    * @param created new value of {@link #getcreated}.
    */
+  @Override
+  @Temporal(TemporalType.TIMESTAMP)
   public void setCreated(Date created) {
 
     this.created = created;
@@ -80,6 +86,7 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
    *
    * @return offer {@link Offer} this special applies for.
    */
+  @ManyToOne
   public OfferEntity getOffer() {
 
     return this.offer;
