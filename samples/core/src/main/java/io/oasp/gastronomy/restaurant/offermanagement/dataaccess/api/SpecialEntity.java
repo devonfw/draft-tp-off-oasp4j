@@ -32,6 +32,8 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
 
   private Date createdDate;
 
+  private String comment;
+
   @Embedded
   private WeeklyPeriodEmbeddable activePeriod;
 
@@ -130,7 +132,6 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
    * @return createdDate
    */
   @Override
-
   public Date getCreatedDate() {
 
     return this.createdDate;
@@ -173,6 +174,22 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
 
     // TODO Auto-generated method stub
     this.activePeriod = (WeeklyPeriodEmbeddable) activePeriod;
+
+  }
+
+  @Override
+  public String getComment() {
+
+    // TODO Auto-generated method stub
+    return this.comment;
+  }
+
+  @Override
+  public void setComment(String comment) {
+
+    // TODO Auto-generated method stub
+
+    this.comment = comment;
 
   }
 
