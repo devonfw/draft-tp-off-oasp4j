@@ -12,6 +12,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -32,6 +39,8 @@ import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductFilter;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductSearchCriteriaTo;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.ProductSortBy;
 import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SideDishEto;
+import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SpecialEto;
+import io.oasp.gastronomy.restaurant.offermanagement.logic.api.to.SpecialSearchCriteriaTo;
 import io.oasp.gastronomy.restaurant.offermanagement.service.api.rest.OffermanagementRestService;
 import io.oasp.module.jpa.common.api.to.PaginatedListTo;
 
@@ -222,6 +231,79 @@ public class OffermanagementRestServiceImpl implements OffermanagementRestServic
   public PaginatedListTo<ProductEto> findProductEtosByPost(ProductSearchCriteriaTo searchCriteriaTo) {
 
     return this.offermanagement.findProductEtos(searchCriteriaTo);
+  }
+
+  /**
+   * Delegates to {@link Offermanagement#findSpecial}.
+   *
+   * @param id the ID of the {@link SpecialEto}
+   * @return the {@link SpecialEto}
+   */
+  @GET
+  @Path("/special/{id}/")
+  public SpecialEto getSpecial(@PathParam("id") String id) {
+
+    Long idAsLong;
+    if (id == null) {
+      throw new BadRequestException("missing id");
+    }
+    try {
+      idAsLong = Long.parseLong(id);
+    } catch (NumberFormatException e) {
+      throw new BadRequestException("id is not a number");
+    } catch (NotFoundException e) {
+      throw new BadRequestException("special not found");
+    }
+    return this.offermanagement.findSpecial(idAsLong);
+  }
+
+  /**
+   * Delegates to {@link Offermanagement#saveSpecial}.
+   *
+   * @param special the {@link SpecialEto} to be saved
+   * @return the recently created {@link SpecialEto}
+   */
+  @POST
+  @Path("/special/")
+  public SpecialEto saveSpecial(SpecialEto special) {
+
+    return this.offermanagement.saveSpecial(special);
+  }
+
+  /**
+   * Delegates to {@link Offermanagement#deleteSpecial}.
+   *
+   * @param id ID of the {@link SpecialEto} to be deleted
+   */
+  @DELETE
+  @Path("/special/{id}/")
+  public void deleteSpecial(@PathParam("id") String id) {
+
+    Long idAsLong;
+    if (id == null) {
+      throw new BadRequestException("missing id");
+    }
+    try {
+      idAsLong = Long.parseLong(id);
+    } catch (NumberFormatException e) {
+      throw new BadRequestException("id is not a number");
+    } catch (NotFoundException e) {
+      throw new BadRequestException("special not found");
+    }
+    this.offermanagement.deleteSpecial(idAsLong);
+  }
+
+  /**
+   * Delegates to {@link Offermanagement#findSpecialEtos}.
+   *
+   * @param searchCriteriaTo the pagination and search criteria to be used for finding specials.
+   * @return the {@link PaginatedListTo list} of matching {@link SpecialEto}s.
+   */
+  @Path("/special/search")
+  @POST
+  public PaginatedListTo<SpecialEto> findSpecialsByPost(SpecialSearchCriteriaTo searchCriteriaTo) {
+
+    return this.offermanagement.findSpecialEtos(searchCriteriaTo);
   }
 
 }
