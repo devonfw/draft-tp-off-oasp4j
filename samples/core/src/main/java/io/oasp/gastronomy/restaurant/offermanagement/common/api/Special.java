@@ -27,4 +27,8 @@ public interface Special extends ApplicationEntity {
 
   public void setCreated(Date created);
 
+  public String getComments();
+
+  public void setComments(String comments);
+
 }

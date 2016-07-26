@@ -8,6 +8,7 @@ endingDay INTEGER NOT NULL,
 endingHour INT NOT NULL,
 specialPrice DECIMAL(19,2),
 created timestamp,
+comments varchar(255),
 offer_id BIGINT
 );
 

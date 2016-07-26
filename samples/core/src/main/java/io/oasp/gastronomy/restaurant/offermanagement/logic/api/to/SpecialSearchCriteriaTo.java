@@ -8,7 +8,6 @@ import io.oasp.module.jpa.common.api.to.SearchCriteriaTo;
 /**
  * This is the {@link SearchCriteriaTo search criteria} {@link net.sf.mmm.util.transferobject.api.TransferObject TO}
  * used to find {@link io.oasp.gastronomy.restaurant.offermanagement.common.api.Special}s.
- *
  */
 public class SpecialSearchCriteriaTo extends SearchCriteriaTo {
 
@@ -23,6 +22,8 @@ public class SpecialSearchCriteriaTo extends SearchCriteriaTo {
   private Money specialPrice;
 
   private Date created;
+
+  private String comments;
 
   /**
    * The constructor.
@@ -80,6 +81,16 @@ public class SpecialSearchCriteriaTo extends SearchCriteriaTo {
   public void setCreated(Date created) {
 
     this.created = created;
+  }
+
+  public String getComments() {
+
+    return comments;
+  }
+
+  public void setComments(String comments) {
+
+    this.comments = comments;
   }
 
 }

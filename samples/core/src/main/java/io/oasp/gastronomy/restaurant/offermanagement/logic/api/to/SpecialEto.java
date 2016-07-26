@@ -24,6 +24,8 @@ public class SpecialEto extends AbstractEto implements Special {
 
   private Date created;
 
+  private String comments;
+
   @Override
   public String getName() {
 
@@ -150,4 +152,17 @@ public class SpecialEto extends AbstractEto implements Special {
     }
     return true;
   }
+
+  @Override
+  public String getComments() {
+
+    return comments;
+  }
+
+  @Override
+  public void setComments(String comments) {
+
+    this.comments = comments;
+  }
+
 }
