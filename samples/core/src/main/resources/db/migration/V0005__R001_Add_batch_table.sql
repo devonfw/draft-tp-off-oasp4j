@@ -9,7 +9,8 @@ CREATE TABLE SPECIAL  (
   endingHour INT NOT NULL,
   specialPrice DECIMAL(19,2),
   created timestamp,
-  offer_id BIGINT
+  offer_id BIGINT,
+  commnet varchar(225)
 );
 
 

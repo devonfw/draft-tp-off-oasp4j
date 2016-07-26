@@ -75,6 +75,10 @@ public class SpecialDaoImpl extends ApplicationDaoImpl<SpecialEntity> implements
     if (createdDate != null) {
       query.where(Alias.$(special.getCreatedDate()).eq(createdDate));
     }
+    String comment = criteria.getComment();
+    if (comment != null) {
+      query.where(Alias.$(special.getComment()).eq(comment));
+    }
     return findPaginated(criteria, query, alias);
   }
 

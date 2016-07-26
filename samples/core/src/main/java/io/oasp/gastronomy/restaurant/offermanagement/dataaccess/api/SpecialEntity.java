@@ -37,6 +37,8 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
 
   private Date createdDate;
 
+  private String comment;
+
   private static final long serialVersionUID = 1L;
 
   /**
@@ -166,6 +168,24 @@ public class SpecialEntity extends ApplicationPersistenceEntity implements Speci
       offerEntity.setId(offerId);
       this.offer = offerEntity;
     }
+  }
+
+  /**
+   * @return comment
+   */
+  @Override
+  public String getComment() {
+
+    return this.comment;
+  }
+
+  /**
+   * @param comment new value of {@link #getcomment}.
+   */
+  @Override
+  public void setComment(String comment) {
+
+    this.comment = comment;
   }
 
 }
